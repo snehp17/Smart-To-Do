@@ -10,23 +10,23 @@ export default function ProgressSection({ stats }) {
       aria-label="Today's progress"
     >
       {/* Top Details */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[var(--brand-tag-bg)] flex items-center justify-center text-[var(--brand-primary)]">
-            <Target className="w-4 h-4 stroke-[2.5]" />
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-[var(--brand-tag-bg)] flex items-center justify-center text-[var(--brand-primary)]">
+            <Target className="w-3.5 h-3.5 stroke-[2.5]" />
           </div>
-          <span className="text-base sm:text-lg font-bold text-[var(--text-main)]">
+          <span className="text-xs sm:text-sm font-bold text-[var(--text-main)]">
             {total === 0 ? 'No tasks yet' : `${completed} of ${total} tasks completed`}
           </span>
         </div>
 
-        <span className="text-sm sm:text-base font-bold px-4 py-1.5 rounded-full bg-[var(--brand-tag-bg)] text-[var(--brand-primary)]">
+        <span className="text-xs font-bold px-3 py-1 rounded-full bg-[var(--brand-tag-bg)] text-[var(--brand-primary)]">
           {progress}%
         </span>
       </div>
 
       {/* Progress Track */}
-      <div className="w-full h-3 rounded-full overflow-hidden bg-[var(--brand-tag-bg)]">
+      <div className="w-full h-2 rounded-full overflow-hidden bg-[var(--brand-tag-bg)]">
         <div
           className="h-full rounded-full progress-bar-fill bg-[var(--brand-primary)]"
           style={{ width: `${progress}%` }}

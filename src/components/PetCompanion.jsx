@@ -80,7 +80,7 @@ export default function PetCompanion({ pet, reaction, isDark, onPetClick, onSwit
           aria-label={`Your ${pet} companion — click to change`}
           title="Click to customize companion"
         >
-          <PetComponent size={68} isCelebrating={isCelebrating} />
+          <PetComponent size={54} isCelebrating={isCelebrating} />
         </button>
       </div>
     </div>

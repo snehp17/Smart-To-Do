@@ -10,10 +10,10 @@ export default function BottomNav({ activeTab, onTabChange, onOpenPet, currentPe
   ]
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none">
       {/* Floating Center Bottom Navigation Bar */}
       <nav
-        className="flex items-center gap-2 sm:gap-3 px-5 py-2.5 rounded-3xl border border-[var(--border-card)] bg-[var(--bg-card)] shadow-2xl backdrop-blur-md transition-all"
+        className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full border border-[var(--border-card)] bg-[var(--bg-card)]/95 shadow-xl backdrop-blur-xl transition-all"
         aria-label="App Navigation"
       >
         {tabs.map((tab) => {
@@ -21,12 +21,13 @@ export default function BottomNav({ activeTab, onTabChange, onOpenPet, currentPe
             return (
               <button
                 key="center-btn"
+                type="button"
                 onClick={onOpenPet}
-                className="w-12 h-12 -my-2 mx-1.5 rounded-full bg-[var(--brand-primary)] hover:scale-105 active:scale-95 text-white flex items-center justify-center shadow-lg cursor-pointer transition-all"
-                title="Companion settings"
-                aria-label="Companion settings"
+                className="w-10 h-10 mx-0.5 rounded-full bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] active:scale-95 text-white flex items-center justify-center shadow-md cursor-pointer transition-all duration-200 hover:scale-105 flex-shrink-0"
+                title="Companion Settings"
+                aria-label="Companion Settings"
               >
-                <Sparkles className="w-5 h-5 stroke-[2.5]" />
+                <Sparkles className="w-4 h-4 stroke-[2.5]" />
               </button>
             )
           }
@@ -37,15 +38,16 @@ export default function BottomNav({ activeTab, onTabChange, onOpenPet, currentPe
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => onTabChange(tab.id)}
-              className={`flex flex-col items-center justify-center px-3.5 py-1.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+              className={`flex flex-col items-center justify-center min-w-[50px] sm:min-w-[58px] px-2 sm:px-2.5 py-1 rounded-xl transition-all duration-200 cursor-pointer ${
                 isActive
-                  ? 'text-[var(--brand-primary)]'
-                  : 'text-[var(--text-sub)] hover:text-[var(--text-main)]'
+                  ? 'bg-[var(--brand-tag-bg)] text-[var(--brand-primary)] font-extrabold shadow-xs'
+                  : 'text-[var(--text-sub)] hover:text-[var(--text-main)] hover:bg-[var(--bg-page)]/60 font-semibold'
               }`}
             >
-              <Icon className={`w-4 h-4 sm:w-5 sm:h-5 mb-0.5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
-              <span>{tab.label}</span>
+              <Icon className={`w-4 h-4 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+              <span className="text-[10px] sm:text-[11px] leading-tight mt-0.5 tracking-tight">{tab.label}</span>
             </button>
           )
         })}

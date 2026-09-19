@@ -24,28 +24,28 @@ export default function StatsCards({ stats }) {
 
   return (
     <section
-      className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 animate-slide-up"
+      className="w-full grid grid-cols-3 gap-2.5 sm:gap-3.5 animate-slide-up"
       style={{ animationDelay: '0.05s' }}
     >
       {cards.map((card) => (
         <div
           key={card.title}
-          className="p-6 sm:p-7 rounded-3xl border border-[var(--border-card)] bg-[var(--bg-card)] shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          className="p-3.5 sm:p-4 rounded-2xl border border-[var(--border-card)] bg-[var(--bg-card)] shadow-xs hover:shadow-sm transition-all flex flex-col justify-between"
         >
           {/* Top: Title & Icon */}
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs sm:text-sm font-bold tracking-widest text-[var(--text-sub)] uppercase">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] sm:text-xs font-bold tracking-wider text-[var(--text-sub)] uppercase">
               {card.title}
             </span>
-            <card.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[var(--brand-primary)]" />
+            <card.icon className="w-4 h-4 text-[var(--brand-primary)]" />
           </div>
 
-          {/* Bottom: Big Number + Unit inline */}
-          <div className="flex items-baseline gap-2.5">
-            <span className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[var(--text-main)]">
+          {/* Bottom: Number + Unit inline */}
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl sm:text-3xl font-black tracking-tight text-[var(--text-main)]">
               {String(card.value).padStart(2, '0')}
             </span>
-            <span className="text-sm sm:text-base font-semibold text-[var(--text-dim)]">
+            <span className="text-[11px] sm:text-xs font-semibold text-[var(--text-dim)]">
               {card.unit}
             </span>
           </div>

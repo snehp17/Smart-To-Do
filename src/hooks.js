@@ -26,6 +26,7 @@ const SAMPLE_TASKS = [
     category: 'Work',
     priority: 'High',
     dueTime: '16:00',
+    date: getTodayDateString(0),
     completed: false,
     createdAt: Date.now(),
   },
@@ -35,6 +36,7 @@ const SAMPLE_TASKS = [
     category: 'Study',
     priority: 'Medium',
     dueTime: '18:00',
+    date: getTodayDateString(0),
     completed: false,
     createdAt: Date.now() - 1000,
   },
@@ -44,6 +46,7 @@ const SAMPLE_TASKS = [
     category: 'Health',
     priority: 'Low',
     dueTime: '19:30',
+    date: getTodayDateString(0),
     completed: true,
     createdAt: Date.now() - 2000,
   },
@@ -53,6 +56,7 @@ const SAMPLE_TASKS = [
     category: 'Personal',
     priority: 'Medium',
     dueTime: '20:00',
+    date: getTodayDateString(0),
     completed: false,
     createdAt: Date.now() - 3000,
   },
@@ -169,6 +173,17 @@ export function getGreeting() {
   return { text: 'Good Evening', emoji: '🌙' }
 }
 
+export function getTodayDateString(offsetDays = 0) {
+  const d = new Date()
+  if (offsetDays !== 0) {
+    d.setDate(d.getDate() + offsetDays)
+  }
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 export function getFormattedDate() {
   const now = new Date()
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -177,12 +192,39 @@ export function getFormattedDate() {
 }
 
 // ─── Time formatter ───
-export function formatTime(time24) {
+export function formatTime(time24, dateStr = null) {
   if (!time24) return ''
-  const [h, m] = time24.split(':').map(Number)
+  const parts = time24.split(':')
+  if (parts.length < 2) return time24
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (isNaN(h) || isNaN(m)) return time24
   const ampm = h >= 12 ? 'PM' : 'AM'
   const h12 = h % 12 || 12
-  return `Today ${h12}:${String(m).padStart(2, '0')} ${ampm}`
+  const formattedTime = `${h12}:${String(m).padStart(2, '0')} ${ampm}`
+
+  if (!dateStr) return formattedTime
+
+  const todayStr = getTodayDateString(0)
+  const tomorrowStr = getTodayDateString(1)
+
+  if (dateStr === todayStr) {
+    return `Today ${formattedTime}`
+  } else if (dateStr === tomorrowStr) {
+    return `Tomorrow ${formattedTime}`
+  } else {
+    try {
+      const parts = dateStr.split('-')
+      if (parts.length === 3) {
+        const d = new Date(parts[0], parts[1] - 1, parts[2])
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        return `${dayNames[d.getDay()]} ${formattedTime}`
+      }
+    } catch {
+      // fallback
+    }
+    return formattedTime
+  }
 }
 
 // ─── Priorities & Categories ───

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useTasks, usePet, useTheme } from './hooks'
+import { useTasks, usePet, useTheme, getTodayDateString } from './hooks'
 import Header from './components/Header'
 import GreetingSection from './components/GreetingSection'
 import StatsCards from './components/StatsCards'
@@ -14,6 +14,10 @@ import EmptyState from './components/EmptyState'
 import Confetti from './components/Confetti'
 import AnimatedBackground from './components/AnimatedBackground'
 import BottomNav from './components/BottomNav'
+import PlanView from './components/PlanView'
+import MetricsView from './components/MetricsView'
+import ProfileView from './components/ProfileView'
+import { exportTasksToPDF } from './utils/pdfExport'
 
 export default function App() {
   const { tasks, addTask, toggleTask, updateTask, deleteTask, sweepCompleted, stats } = useTasks()
@@ -36,7 +40,10 @@ export default function App() {
 
   // Task add
   const handleAddTask = useCallback((task) => {
-    addTask(task)
+    addTask({
+      date: task.date || getTodayDateString(0),
+      ...task,
+    })
     triggerPetReaction('Goal added to list! 🐾', 'excited')
   }, [addTask, triggerPetReaction])
 
@@ -81,60 +88,102 @@ export default function App() {
         isDark={isDark}
       />
 
-      {/* 2. Main Full-Scale Open Web Layout */}
-      <div className="w-full max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 py-8 pb-36 relative z-10 flex flex-col space-y-8">
+      {/* 2. Clean, Simple, Proportional Main Layout */}
+      <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-5 pb-28 relative z-10 flex flex-col gap-5 sm:gap-6">
         {/* Top Header */}
         <Header
           theme={theme}
           onToggleTheme={toggleTheme}
+          onOpenProfile={() => setActiveTab('profile')}
+          onOpenMetrics={() => setActiveTab('metrics')}
         />
 
-        {/* Main Dashboard Content */}
-        <main className="flex flex-col space-y-7">
-          {/* Greeting & Date */}
-          <GreetingSection />
+        {/* Dynamic Content Views based on active tab */}
+        {activeTab === 'today' && (
+          <main className="flex flex-col space-y-5 animate-fade-in">
+            {/* Greeting & Date */}
+            <GreetingSection />
 
-          {/* Stats Cards: 3 Spacious Blocks */}
-          <StatsCards stats={stats} />
+            {/* Stats Cards: 3 Spacious Blocks */}
+            <StatsCards stats={stats} />
 
-          {/* Progress Bar */}
-          <ProgressSection stats={stats} />
+            {/* Progress Bar */}
+            <ProgressSection stats={stats} />
 
-          {/* Task Input Field */}
-          <TaskInput onAdd={handleAddTask} />
+            {/* Task Input Field */}
+            <TaskInput onAdd={handleAddTask} />
 
-          {/* Task Filters & Sweep */}
-          <TaskFilters
-            filter={filter}
-            onFilterChange={setFilter}
-            onSweep={sweepCompleted}
-            counts={{
-              all: tasks.length,
-              active: tasks.filter((t) => !t.completed).length,
-              completed: tasks.filter((t) => t.completed).length,
-            }}
+            {/* Task Filters & Sweep */}
+            <TaskFilters
+              filter={filter}
+              onFilterChange={setFilter}
+              onSweep={sweepCompleted}
+              onExportPDF={() => exportTasksToPDF(tasks, stats, pet)}
+              counts={{
+                all: tasks.length,
+                active: tasks.filter((t) => !t.completed).length,
+                completed: tasks.filter((t) => t.completed).length,
+              }}
+            />
+
+            {/* Task List or Empty State */}
+            <div className="w-full">
+              {filteredTasks.length === 0 ? (
+                <EmptyState
+                  filter={filter}
+                  allDone={stats.total > 0 && stats.completed === stats.total}
+                  pet={pet}
+                  isDark={isDark}
+                />
+              ) : (
+                <TaskList
+                  tasks={filteredTasks}
+                  onToggle={handleToggleTask}
+                  onEdit={setEditingTask}
+                  onDelete={deleteTask}
+                  isDark={isDark}
+                />
+              )}
+            </div>
+          </main>
+        )}
+
+        {/* Plan / Weekly Planner View */}
+        {activeTab === 'plan' && (
+          <PlanView
+            tasks={tasks}
+            onToggleTask={handleToggleTask}
+            onAddTask={handleAddTask}
+            onEditTask={setEditingTask}
+            onDeleteTask={deleteTask}
+            isDark={isDark}
           />
+        )}
 
-          {/* Task List or Empty State */}
-          <div className="w-full">
-            {filteredTasks.length === 0 ? (
-              <EmptyState
-                filter={filter}
-                allDone={stats.total > 0 && stats.completed === stats.total}
-                pet={pet}
-                isDark={isDark}
-              />
-            ) : (
-              <TaskList
-                tasks={filteredTasks}
-                onToggle={handleToggleTask}
-                onEdit={setEditingTask}
-                onDelete={deleteTask}
-                isDark={isDark}
-              />
-            )}
-          </div>
-        </main>
+        {/* Metrics & Analytics View */}
+        {activeTab === 'metrics' && (
+          <MetricsView
+            stats={stats}
+            tasks={tasks}
+            pet={pet}
+            isDark={isDark}
+          />
+        )}
+
+        {/* Profile & Settings View */}
+        {activeTab === 'profile' && (
+          <ProfileView
+            theme={theme}
+            onToggleTheme={toggleTheme}
+            pet={pet}
+            onSwitchPet={setPet}
+            onOpenPetSelector={() => setShowPetSelector(true)}
+            tasks={tasks}
+            stats={stats}
+            onSweepTasks={sweepCompleted}
+            isDark={isDark}
+          />
+        )}
       </div>
 
       {/* Floating Bottom Nav */}
