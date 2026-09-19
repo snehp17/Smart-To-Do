@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg-page: #FAF6F0;
+  --bg-card: #FFFFFF;
+  --border-card: #E8DFD5;
+  --text-main: #2B241E;
+  --text-sub: #74695E;
+  --text-dim: #978C80;
+  --brand-primary: #8B5E34;
+  --brand-primary-hover: #714A27;
+  --brand-tag-bg: #F3EAE0;
+}
+
+.dark {
+  --bg-page: #000000;
+  --bg-card: #0F0F0F;
+  --border-card: #222222;
+  --text-main: #FFFFFF;
+  --text-sub: #A3A3A3;
+  --text-dim: #737373;
+  --brand-primary: #F59E0B;
+  --brand-primary-hover: #D97706;
+  --brand-tag-bg: #222222;
+}
+
+/* Base resets & layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  color: var(--text-main);
+  background-color: var(--bg-page);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background & Ambient Animations */
+@keyframes blob1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(45px, 35px) scale(1.08); }
+}
+
+@keyframes blob2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-35px, -45px) scale(1.12); }
+}
+
+@keyframes blob3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-25px, 25px) scale(0.92); }
+}
+
+@keyframes floatDrift {
+  0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.2; }
+  50% { transform: translateY(-25px) translateX(12px); opacity: 0.65; }
+}
+
+@keyframes driftUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  15% { opacity: 0.6; }
+  85% { opacity: 0.6; }
+  100% { transform: translateY(-105vh) rotate(10deg); opacity: 0; }
+}
+
+@keyframes celebrationBurst {
+  0% { opacity: 0; transform: scale(0.85); }
+  40% { opacity: 1; transform: scale(1.03); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+/* Lively Pet Animations */
+@keyframes petBreathe {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-3px) scale(1.015); }
+}
+
+@keyframes petBounce {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  20% { transform: translateY(-14px) scale(0.94, 1.08); }
+  40% { transform: translateY(0) scale(1.08, 0.92); }
+  60% { transform: translateY(-7px) scale(0.98, 1.03); }
+  80% { transform: translateY(0) scale(1.02, 0.98); }
+}
+
+@keyframes petCelebrate {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  15% { transform: translateY(-16px) rotate(-8deg) scale(1.12); }
+  30% { transform: translateY(-2px) rotate(8deg) scale(1.06); }
+  45% { transform: translateY(-12px) rotate(-6deg) scale(1.1); }
+  60% { transform: translateY(-2px) rotate(4deg) scale(1.02); }
+  75% { transform: translateY(-6px) rotate(-3deg) scale(1.05); }
+}
+
+@keyframes tailWag {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-16deg); }
+}
+
+@keyframes catTailSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-18deg); }
+}
+
+@keyframes petBlink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.08); }
+}
+
+@keyframes earTwitchL {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  94% { transform: rotate(-10deg); }
+  98% { transform: rotate(2deg); }
+}
+
+@keyframes earTwitchR {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  94% { transform: rotate(10deg); }
+  98% { transform: rotate(-2deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes checkmark {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Utility Animation Classes */
+.animate-blob-1 { animation: blob1 24s ease-in-out infinite; }
+.animate-blob-2 { animation: blob2 28s ease-in-out infinite; }
+.animate-blob-3 { animation: blob3 22s ease-in-out infinite; }
+.animate-float-drift { animation: floatDrift ease-in-out infinite; }
+.animate-drift-up { animation: driftUp linear infinite; }
+.animate-celebration-burst { animation: celebrationBurst 4s ease-out forwards; }
+
+.animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.35s ease-out forwards; }
+.animate-scale-in { animation: scaleIn 0.2s ease-out forwards; }
+.animate-checkmark { animation: checkmark 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.animate-pet-breathe { animation: petBreathe 3s ease-in-out infinite; }
+.animate-pet-bounce { animation: petBounce 0.75s ease-out; }
+.animate-pet-celebrate { animation: petCelebrate 1.4s ease-in-out; }
+
+.pet-tail-dog {
+  transform-origin: 76px 64px;
+  animation: tailWag 1.2s ease-in-out infinite;
+}
+.pet-tail-cat {
+  transform-origin: 75px 64px;
+  animation: catTailSway 2s ease-in-out infinite;
+}
+.pet-eye {
+  transform-origin: center;
+  animation: petBlink 4s infinite;
+}
+.pet-ear-left {
+  transform-origin: 32px 28px;
+  animation: earTwitchL 5s ease-in-out infinite;
+}
+.pet-ear-right {
+  transform-origin: 68px 28px;
+  animation: earTwitchR 5s ease-in-out infinite 0.5s;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d6cbbe; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b8aa9a; }
+.dark ::-webkit-scrollbar-thumb { background: #262626; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #404040; }
+
+.progress-bar-fill {
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.confetti-piece {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  top: -10px;
+  z-index: 9999;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+  pointer-events: none;
+}
